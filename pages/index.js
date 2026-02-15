@@ -1,17 +1,19 @@
-import CardsPage from "./card"
-
+import CardsPage from "../components/card"
+import Typography from "@mui/material/Typography";
+import { useEffect, useState, useRef } from 'react'
+import Navbar from '../components/navbar'
 export default function Home() {
   return (
     <main style={{
-      display: 'flex',
-      alignItems: 'center',
       justifyContent: 'center',
       height: '100vh',
       fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, sans-serif'
     }}>
-      <div>
-       <CardsPage />
-      </div>
+      <>
+      <Navbar />
+      <CardsPage />
+     
+      </>
     </main>
   )
 }
