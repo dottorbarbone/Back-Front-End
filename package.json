@@ -1,0 +1,20 @@
+{
+  "name": "nextjs-base",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "@mui/material": "^5.14.11",
+    "@mui/icons-material": "^5.14.11",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0"
+  }
+}
