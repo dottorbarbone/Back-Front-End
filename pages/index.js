@@ -12,7 +12,7 @@ export default function Home() {
       <>
       <Navbar />
       <CardsPage />
-     
+      
       </>
     </main>
   )
