@@ -37,3 +37,17 @@ code {
   padding: 0.2em 0.4em;
   border-radius: 6px;
 }
+@media print {
+  /* Nasconde lo Speed Dial e tutti i bottoni durante la stampa */
+  .no-print, 
+  button, 
+  .MuiSpeedDial-root {
+    display: none !important;
+  }
+
+  /* Opzionale: toglie i margini extra della pagina */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+}

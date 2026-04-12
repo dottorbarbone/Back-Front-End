@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { db } from "../lib/firebase";
 import { ref, push } from "firebase/database";
-
+import { serverTimestamp } from "firebase/database";
 import { useRouter } from 'next/navigation'; // Se usi la cartella 'app'
 // import { useRouter } from 'next/router'; // Se usi la cartella 'pages'
 // MUI Components
@@ -11,25 +11,31 @@ import {
   Button, 
   Paper, 
   Typography, 
-  Stack 
+  Stack,
+  
 } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 export default function AddCardForm() {
   const router = useRouter(); // Inizializza il router
-  const [formData, setFormData] = useState({ titolo: "", descrizione: ""});
+  const [formData, setFormData] = useState({ titolo: "", descrizione: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
       const cardsRef = ref(db, "cards");
-      
+      const dataToSave = {
+          ...formData,
+         datacreazione: serverTimestamp() // Usa il timestamp del server
+      };      
       // 1. Aspetta che Firebase salvi i dati
-      await push(cardsRef, formData);
+      await push(cardsRef, dataToSave);
       
       // 2. Torna alla home (percorso "/")
       router.push("/"); 
+
+      //data da salvare
       
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
@@ -65,11 +71,11 @@ export default function AddCardForm() {
             value={formData.descrizione}
             onChange={(e) => setFormData({...formData, descrizione: e.target.value})}
           />
-
+         
           <Button 
             type="submit" 
             variant="contained" 
-            size="large"
+            size="small"
             startIcon={<AddCircleOutlineIcon />}
             sx={{ py: 1.5, fontWeight: 'bold', borderRadius: 2 }}
           >
@@ -79,7 +85,7 @@ export default function AddCardForm() {
             href="../"
             type="submit" 
             variant="outlined" 
-            size="large"
+            size="small"
             sx={{ py: 1.5, fontWeight: 'bold', borderRadius: 2 }}
           >
             Torna alla home
