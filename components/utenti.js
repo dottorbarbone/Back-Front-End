@@ -21,6 +21,7 @@ export default function Utenti() {
   useEffect(() => {
     // Puntiamo al percorso "users" sul database
     const utentiRef = ref(db, "users");
+  // Funzione per eliminare una card
 
     const unsubscribe = onValue(utentiRef, (snapshot) => {
       const data = snapshot.val();

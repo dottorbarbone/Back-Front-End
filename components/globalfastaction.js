@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PrintIcon from '@mui/icons-material/Print'; // Import corretto
 import { useRouter } from 'next/router';
-
+import ChecklistIcon from '@mui/icons-material/Checklist';
 export default function GlobalSpeedDial() {
   const router = useRouter();
 
@@ -20,6 +20,7 @@ export default function GlobalSpeedDial() {
   const actions = [
     { icon: <AddIcon />, name: 'Nuova Card', route: '/addCard' },
     { icon: <PersonAddIcon />, name: 'Nuovo Utente', route: '/addUtente' },
+    { icon: <ChecklistIcon />, name: 'Nuova Commessa', route: '/addCommessa' },
     { 
       icon: <PrintIcon />, 
       name: 'Stampa Pagina', 

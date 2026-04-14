@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation'; // Importa il router
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -13,11 +14,24 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PersonIcon from '@mui/icons-material/Person';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { db } from "../lib/firebase";
+import { ref, remove } from "firebase/database";
+
 export default function PassUtente({ utente }) {
-  // Se non c'è l'utente, non renderizzare nulla
+  const router = useRouter(); // Inizializza il router
+
+  const coloreBordi=()=>{
+    if(utente.colore === "success") return "#4caf50";
+    if(utente.colore === "error") return "#f44336";
+    if(utente.colore === "warning") return "#ff9800"; 
+    if(utente.colore === "info") return "#028dff";
+  } 
+
+
   if (!utente) return null;
 
-  // Trasformiamo il timestamp di Firebase in una stringa leggibile
   const dataleggibile = utente.datacreazione
     ? new Date(utente.datacreazione).toLocaleString("it-IT", {
         day: "2-digit",
@@ -28,9 +42,25 @@ export default function PassUtente({ utente }) {
       })
     : "Data non disponibile";
 
+  // FUNZIONE EDIT
+  const handleEdit = (id) => {
+    // Naviga alla pagina edit passando l'id nell'URL
+    router.push(`/editUtente/${id}`);
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm("Sei sicuro di voler eliminare questo utente?")) {
+      const userRef = ref(db, `users/${id}`);
+      remove(userRef);
+    }
+  };
+
   return (
     <Card
       sx={{
+        borderColor: coloreBordi(),
+        borderWidth: 2,
+        borderStyle: 'solid',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -52,7 +82,8 @@ export default function PassUtente({ utente }) {
           </Badge>
         }
         action={
-          <IconButton size="small">
+          /* Spostato l'onClick sull'IconButton per catturare meglio il tocco */
+          <IconButton size="small" onClick={() => handleEdit(utente.id)}>
             <MoreVertIcon />
           </IconButton>
         }
@@ -73,7 +104,6 @@ export default function PassUtente({ utente }) {
               size="small" 
               sx={{ fontSize: '0.7rem' }} 
             />
-            {/* CORREZIONE QUI: Usiamo dataleggibile direttamente, senza utente. davanti */}
             <Chip 
               icon={<CalendarTodayIcon />} 
               label={dataleggibile} 
@@ -83,23 +113,28 @@ export default function PassUtente({ utente }) {
           </Stack>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            {/* Assicuriamoci che la valutazione sia un numero */}
             <Rating value={Number(utente.valutazione) || 0} precision={0.5} readOnly size="small" />
           </Box>
         </Stack>
       </CardContent>
 
       <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
-        <Chip 
-          label={utente.status || "Sconosciuto"} 
-          color={utente.colore || "default"} 
-          size="small" 
-          sx={{ height: 20, fontSize: '0.6rem' }} 
-        />
+
         <Typography variant="caption" color="text.disabled">
           ID: {utente.id}
         </Typography>
       </CardActions>
+      <Box sx={{ p: 2, pt: 0 }}>
+        <Button 
+          variant="outlined" 
+          color="error" 
+          fullWidth
+          startIcon={<DeleteIcon />}
+          onClick={() => handleDelete(utente.id)}
+        >
+          Elimina
+        </Button>
+      </Box>
     </Card>
   );
 }

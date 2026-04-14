@@ -1,7 +1,7 @@
-import CardsPage from "../components/card"
+import CardsPage from "../components/card";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState, useRef } from 'react'
-import Navbar from '../components/navbar'
+import { useEffect, useState, useRef } from 'react';
+import Navbar from '../components/navbar';
 import Utenti from "../components/utenti";
 export default function Home() {
   return (

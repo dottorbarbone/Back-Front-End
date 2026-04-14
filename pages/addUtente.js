@@ -26,6 +26,8 @@ export default function AddUserForm() {
     valutazione: "",
     avatar: "",
     colore: "success", // Valore di default
+    abilitato: true, // Nuovo campo per abilitare/disabilitare l'utente 
+    
   });
 
   const handleSubmit = async (e) => {
