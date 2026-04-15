@@ -19,6 +19,7 @@ export default function Navbar() {
 
         <ul className={`nav-links ${open ? 'open' : ''}`}>
           <li><a href="/" onClick={() => setOpen(false)}>Explore</a></li>
+          <li><a href="/addCommessa" onClick={() => setOpen(false)}>Commesse</a></li>
           <li><a href="https://console.firebase.google.com/u/0/project/frontend-905b0/database/frontend-905b0-default-rtdb/data" onClick={() => setOpen(false)}>API</a></li>
           <li><a href="/" onClick={() => setOpen(false)}>Contact</a></li>
         </ul>
