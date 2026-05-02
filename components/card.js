@@ -14,18 +14,22 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
-
-
+import { EditLocation } from "@mui/icons-material";
+import { useRouter } from 'next/navigation'; //router
 export default function CardsPage() {
   const [listaCard, setListaCard] = useState([]);
   const [loading, setLoading] = useState(true);
-
+ const router = useRouter(); // Inizializza il router
   // Funzione per eliminare una card
   const handleDelete = (id) => {
     if (window.confirm("Sei sicuro di voler eliminare questa card?")) {
       const cardDoc = ref(db, `cards/${id}`);
       remove(cardDoc);
     }
+  };
+    const handleEdit = (id) => {
+    // Naviga alla pagina edit passando l'id nell'URL
+    router.push(`/editCard/${id}`);
   };
 
   useEffect(() => {
@@ -124,6 +128,15 @@ export default function CardsPage() {
                     onClick={() => handleDelete(card.id)}
                   >
                     Elimina
+                  </Button>
+                  <Button 
+                    variant="outlined" 
+                    color="warning" 
+                    fullWidth
+                    startIcon={<EditLocation />}
+                    onClick={() => handleEdit(card.id)}
+                  >
+                    Modifica
                   </Button>
                 </Box>
               </Card>

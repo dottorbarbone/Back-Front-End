@@ -14,6 +14,7 @@ export default function Commesse(){
             borderRadius:"10px"
         }}>
             <Typography variant="h2">Pagina delle commesse</Typography>
+            
         </Box>
     )
 }
