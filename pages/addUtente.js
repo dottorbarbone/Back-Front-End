@@ -55,7 +55,10 @@ export default function AddUserForm() {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 4, mb: 5, borderRadius: 3, mx: 'auto' }}>
+    <Paper
+      elevation={3}
+      sx={{ p: 4, mb: 5, borderRadius: 3, mx: "auto", maxWidth: 600 }}
+    >
       <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', color: 'primary.main' }}>
         Aggiungi Nuovo Utente
       </Typography>

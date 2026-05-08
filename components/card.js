@@ -74,13 +74,7 @@ export default function CardsPage() {
         <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
           Le mie Card
         </Typography>
-        <Button 
-          variant="contained" 
-          href="/addCard" // Assicurati che il percorso sia corretto nel tuo router
-          startIcon={<AddIcon />}
-        >
-          Aggiungi Card
-        </Button>
+      {/*  Eventuale pulsante aggiunta card */}
       </Box>
       
       <Grid container spacing={3}>
@@ -102,7 +96,7 @@ export default function CardsPage() {
                 height: '100%', 
                 display: 'flex', 
                 flexDirection: 'column',
-                transition: "0.3s",
+                transition: "0.5s",
                 "&:hover": { boxShadow: 15 } 
               }}>
                 <CardContent sx={{ flexGrow: 5 }}>

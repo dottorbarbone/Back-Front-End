@@ -30,11 +30,11 @@ export default function AddCommessaForm() {
 
   // 2. STATO FORM
   const [formData, setFormData] = useState({
-    Descrizione: "",
-    Assegnazione: "",
-    Stato: "",
-    Priorità: 3, // Valore di default per il rating
-    Ricompensa: "",
+    descrizione: "",
+    assegnazione: "",
+    stato: "",
+    priorita: 3, // Valore di default per il rating
+    ricompensa: "",
   });
 
   // 3. RECUPERO NOMI UTENTI DAL DB
@@ -61,9 +61,9 @@ export default function AddCommessaForm() {
       const dataToSave = {
         ...formData,
         // Conversioni di sicurezza
-        Stato: Number(formData.Stato),
-        Priorità: Number(formData.Priorità),
-        Ricompensa: Number(formData.Ricompensa),
+        stato: Number(formData.stato),
+        priorita: Number(formData.priorita),
+        ricompensa: Number(formData.ricompensa),
         datacreazione: serverTimestamp(),
       };
 
@@ -94,9 +94,9 @@ export default function AddCommessaForm() {
             variant="outlined"
             fullWidth
             required
-            value={formData.Descrizione}
+            value={formData.descrizione}
             onChange={(e) =>
-              setFormData({ ...formData, Descrizione: e.target.value })
+              setFormData({ ...formData, descrizione: e.target.value })
             }
           />
 
@@ -105,10 +105,10 @@ export default function AddCommessaForm() {
             options={utentiOptions}
             freeSolo
             loading={loadingUtenti}
-            value={formData.Assegnazione}
+            value={formData.assegnazione}
             // Gestisce la selezione o l'input manuale
             onInputChange={(event, newInputValue) => {
-              setFormData({ ...formData, Assegnazione: newInputValue });
+              setFormData({ ...formData, assegnazione: newInputValue });
             }}
             renderInput={(params) => (
               <TextField
@@ -141,7 +141,7 @@ export default function AddCommessaForm() {
                 id="demo-simple-select"
                 value={formData.stato}
                 label="Stato"
-                onChange={(e) => setFormData({ ...formData, Stato: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, stato: e.target.value })}
               >
                 <MenuItem defaultChecked sx={{color:"red"}} value={1}>Sospeso</MenuItem>
                 <MenuItem sx={{color:"#caca50"}} value={2}>Presa in carico</MenuItem>
@@ -174,8 +174,8 @@ export default function AddCommessaForm() {
                 <WarningAmberIcon fontSize="inherit" sx={{ opacity: 0.3 }} />
               }
               precision={0.5}
-              value={Number(formData.Priorità)}
-              onChange={(e, val) => setFormData({ ...formData, Priorità: val })}
+              value={Number(formData.priorita)}
+              onChange={(e, val) => setFormData({ ...formData, priorita: val })}
             />
           </Box>
 
@@ -186,9 +186,9 @@ export default function AddCommessaForm() {
             variant="outlined"
             fullWidth
             required
-            value={formData.Ricompensa}
+            value={formData.ricompensa}
             onChange={(e) =>
-              setFormData({ ...formData, Ricompensa: e.target.value })
+              setFormData({ ...formData, ricompensa: e.target.value })
             }
           />
 

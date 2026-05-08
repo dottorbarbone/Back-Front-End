@@ -46,7 +46,10 @@ export default function AddCardForm() {
 
 
   return (
-    <Paper elevation={3} sx={{ p: 4, mb: 5, borderRadius: 3 }}>
+    <Paper
+      elevation={3}
+      sx={{ p: 4, mb: 5, borderRadius: 3, mx: "auto", maxWidth: 600 }}
+    >
       <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', color: 'primary.main' }}>
         Aggiungi Nuova Card
       </Typography>

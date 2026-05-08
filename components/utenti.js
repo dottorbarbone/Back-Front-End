@@ -70,7 +70,7 @@ export default function Utenti() {
         width: "100%",
         px: { xs: 2, md: 4 },
         py: 4,
-        marginTop: "4rem",
+        marginTop: "1rem",
         boxSizing: "border-box",
       }}
     >
@@ -86,14 +86,7 @@ export default function Utenti() {
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
           Gestione Utenti
         </Typography>
-        <Button
-          variant="contained"
-          href="/addUtente"
-          startIcon={<AddIcon />}
-          sx={{ borderRadius: 2 }}
-        >
-          Aggiungi Utente
-        </Button>
+        {/*  Eventuale pulsante aggiunta utente */}
       </Box>
 
       {/* Griglia Responsive */}
