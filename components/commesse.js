@@ -1,9 +1,10 @@
+'use client'; 
+
 import { useState, useEffect } from "react";
 import { db } from "../lib/firebase"; 
 import { ref, onValue, remove } from "firebase/database";
 import { 
   Button, 
-  Grid, 
   Card, 
   CardContent, 
   Typography, 
@@ -12,49 +13,55 @@ import {
   Alert,
   Rating
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { EditLocation } from "@mui/icons-material";
-import { useRouter } from 'next/navigation'; //router
-export default function CardsPage() {
+import { useRouter } from 'next/navigation';
+
+// --- IMPORT SWIPER ---
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+
+// --- IMPORT STILI SWIPER ---
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+export default function CommessePage() {
   const [listaCommesse, setListaCommesse] = useState([]);
   const [loading, setLoading] = useState(true);
- const router = useRouter(); // Inizializza il router
-  // Funzione per eliminare una card
+  const router = useRouter();
+
+  const strutturaStato = {
+    1: "Sospeso",
+    2: "Presa in carico",
+    3: "Fase di lavorazione",
+    4: "Fase di collaudo",
+  };
+
   const handleDelete = (id) => {
     if (window.confirm("Sei sicuro di voler eliminare questa commessa?")) {
       const commessaDoc = ref(db, `commesse/${id}`);
       remove(commessaDoc);
     }
   };
-  const strutturaStato ={
-    1:"Sospeso",
-    2:"Presa in carico",
-    3:"Fase di lavorazione",
-    4:"Fase di collaudo",
-  }
-    const handleEdit = (id) => {
-    // Naviga alla pagina edit passando l'id nell'URL
+
+  const handleEdit = (id) => {
     router.push(`/editCommesse/${id}`);
   };
 
   useEffect(() => {
     const commesseRef = ref(db, "commesse"); 
-
     const unsubscribe = onValue(commesseRef, (snapshot) => {
       const data = snapshot.val();
-      
       if (data) {
-        // Trasformiamo l'oggetto in array e lo ordiniamo per data decrescente
         const arrayFormattato = Object.entries(data)
           .map(([id, valore]) => ({
             id: id,
             ...valore
           }))
           .sort((a, b) => (b.datacreazione || 0) - (a.datacreazione || 0));
-        
         setListaCommesse(arrayFormattato);
       } else {
         setListaCommesse([]);
@@ -65,7 +72,6 @@ export default function CardsPage() {
     return () => unsubscribe();
   }, []);
 
-  // Schermata di caricamento
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -77,96 +83,125 @@ export default function CardsPage() {
 
   return (
     <Box sx={{ padding: "2rem", marginTop: "1rem" }}>
-      {/* Intestazione con Titolo e Bottone Aggiungi */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
           Commesse
         </Typography>
-        {/*  Eventuale pulsante aggiunta utente */}
       </Box>
       
-      <Grid container spacing={3}>
-        {listaCommesse.map((commessa) => {
-          // Logica per formattare la data all'interno del map
-          const dataleggibile = commessa.datacreazione 
-            ? new Date(commessa.datacreazione).toLocaleString("it-IT", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
-              }) 
-            : "Data non disponibile";
+      {listaCommesse.length > 0 ? (
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={30}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          }}
+          style={{ padding: '20px 10px 60px 10px' }}
+        >
+          {listaCommesse.map((commessa) => {
+            const dataleggibile = commessa.datacreazione 
+              ? new Date(commessa.datacreazione).toLocaleString("it-IT", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit"
+                }) 
+              : "Data non disponibile";
 
-          return (
-            <Grid item xs={12} sm={6} md={4} key={commessa.id}>
-              <Card sx={{ 
-                height: '100%', 
-                display: 'flex', 
-                flexDirection: 'column',
-                transition: "0.3s",
-                "&:hover": { boxShadow: 15 } 
-              }}>
-                <CardContent sx={{ flexGrow: 5 }}>
-                  <Typography gutterBottom variant="body1" component="div" sx={{ fontWeight: 'bold' }}>
-                    {commessa.assegnazione || "Senza Assegnazione"}
-                  </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                   <Rating  icon={ <WarningAmberIcon fontSize="inherit" color="warning" sx={{ fontWeight: "bold" }}/>}
-                     emptyIcon={<WarningAmberIcon fontSize="inherit" sx={{ opacity: 0.3 }} />} value={Number(commessa.priorita) || 0} precision={0.5} readOnly size="small" />
+            return (
+              <SwiperSlide key={commessa.id}>
+                <Card sx={{ 
+                  height: 'auto',
+                  minHeight: '450px', // Leggermente più alto per i contenuti extra delle commesse
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  transition: "0.3s ease-in-out",
+                  "&:hover": { boxShadow: 10 },
+                  borderRadius: '16px',
+                  border: '1px solid #eaeaea',
+                  // --- FIX NITIDEZZA ---
+                  transform: 'translateZ(0)', 
+                  backfaceVisibility: 'hidden',
+                  WebkitFontSmoothing: 'antialiased'
+                }}>
+                  <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                    <Typography gutterBottom variant="body1" sx={{ fontWeight: 'bold' }}>
+                      {commessa.assegnazione || "Senza Assegnazione"}
+                    </Typography>
+                    
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                      <Rating 
+                        icon={<WarningAmberIcon fontSize="inherit" color="warning" />}
+                        emptyIcon={<WarningAmberIcon fontSize="inherit" sx={{ opacity: 0.3 }} />} 
+                        value={Number(commessa.priorita) || 0} 
+                        precision={0.5} 
+                        readOnly 
+                        size="small" 
+                      />
+                    </Box>
+                    
+                    <hr style={{ opacity: 0.2, marginBottom: '16px' }} />
+                    
+                    <Typography variant="h5" color="text.primary" sx={{ mb: 2, fontWeight: 'medium' }}>
+                      {commessa.descrizione || "Nessuna Descrizione."}
+                    </Typography>
+
+                    <Typography variant="body2" color="success.main" sx={{ mb: 1, fontWeight: 'bold' }}>
+                      Ricompensa: {commessa.ricompensa || "Nessuna Ricompensa."}
+                    </Typography>
+                    
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      Stato: <strong>{strutturaStato[commessa.stato] || commessa.stato}</strong>
+                    </Typography>
+
+                    {commessa.stato >= 4 && (
+                      <Alert icon={<CheckIcon fontSize="inherit" />} sx={{ mb: 2 }} severity="success">
+                        Completata
+                      </Alert>
+                    )}
+
+                    <Typography variant="caption" color="text.disabled" sx={{ display: 'block' }}>
+                      Creato il: {dataleggibile}
+                    </Typography>
+                  </CardContent>
+
+                  <Box sx={{ p: 2, pt: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Button 
+                      variant="outlined" 
+                      color="warning" 
+                      fullWidth
+                      startIcon={<EditLocation />}
+                      onClick={() => handleEdit(commessa.id)}
+                      sx={{ borderRadius: '8px', textTransform: 'none', fontWeight: 'bold' }}
+                    >
+                      Modifica
+                    </Button>
+                    <Button 
+                      variant="outlined" 
+                      color="error" 
+                      fullWidth
+                      startIcon={<DeleteIcon />}
+                      onClick={() => handleDelete(commessa.id)}
+                      sx={{ borderRadius: '8px', textTransform: 'none', fontWeight: 'bold' }}
+                    >
+                      Elimina
+                    </Button>
                   </Box>
-                  <hr/>
-                  <Typography variant="h4" color="text.secondary" sx={{ mb: 2 }}>
-                    {commessa.descrizione || "Nessuna Descrizione."}
-                  </Typography>
-
-                  <Typography variant="body2" color="green" sx={{ mb: 2 }}>
-                    Ricompensa: {commessa.ricompensa || "Nessuna Ricompensa."}
-                  </Typography>
-                  
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Stato: {strutturaStato[commessa.stato] || commessa.stato}
-                  </Typography>
-                  {commessa.stato >=4 ?  //usare && se non si vuole fare if else
-                    <Alert icon={<CheckIcon fontSize="inherit" />} sx={{marginBottom:'20px'}} severity="success">
-                      Commessa Completata
-                    </Alert> : null
-                    }
-                  <Typography variant="caption" color="primary" sx={{ display: 'block', mb: 2 }}>
-                    Creato il: {dataleggibile}
-                  </Typography>
-                </CardContent>
-
-                <Box sx={{ p: 2, pt: 0 }}>
-                  <Button 
-                    variant="outlined" 
-                    color="error" 
-                    fullWidth
-                    startIcon={<DeleteIcon />}
-                    onClick={() => handleDelete(commessa.id)}
-                  >
-                    Elimina
-                  </Button>
-                  <Button 
-                    variant="outlined" 
-                    color="warning" 
-                    fullWidth
-                    startIcon={<EditLocation />}
-                    onClick={() => handleEdit(commessa.id)}
-                  >
-                    Modifica
-                  </Button>
-                </Box>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
-
-      {listaCommesse.length === 0 && (
-      <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-        Non ci sono commesse da visualizzare. Clicca su "Aggiungi Commesse" per crearne una nuova!
-      </Alert>
+                </Card>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      ) : (
+        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+          Non ci sono commesse da visualizzare.
+        </Alert>
       )}
     </Box>
   );
