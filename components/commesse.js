@@ -84,8 +84,8 @@ export default function CommessePage() {
   return (
     <Box sx={{ padding: "2rem", marginTop: "1rem" }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-          Commesse
+        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+          GESTIONE COMMESSE
         </Typography>
       </Box>
       

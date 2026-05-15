@@ -74,8 +74,8 @@ export default function CardsPage() {
   return (
     <Box sx={{ padding: "2rem", marginTop: "4rem" }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-          Le mie Card
+        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+          GESTIONE PROMEMORIA
         </Typography>
       </Box>
       
@@ -114,7 +114,7 @@ export default function CardsPage() {
               <SwiperSlide key={card.id}>
                 <Card sx={{ 
                   height: 'auto', // Altezza fissa per uniformità nello slider
-                  minHeight: '300px', // Altezza minima per evitare card troppo piccole
+                  minHeight: '220px', // Altezza minima per evitare card troppo piccole
                   display: 'flex', 
                   flexDirection: 'column',
                   transition: "0.5s",

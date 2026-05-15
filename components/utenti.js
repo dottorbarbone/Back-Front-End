@@ -83,8 +83,8 @@ export default function Utenti() {
           mb: 4,
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-          Gestione Utenti
+        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+          GESTIONE UTENTI
         </Typography>
         {/*  Eventuale pulsante aggiunta utente */}
       </Box>

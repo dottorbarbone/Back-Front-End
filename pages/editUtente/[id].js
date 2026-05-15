@@ -3,7 +3,7 @@ import { db } from "../../lib/firebase";
 import { ref, get, update, serverTimestamp } from "firebase/database";
 import { useRouter } from 'next/router'; 
 import { 
-  Box, TextField, Button, Paper, Typography, Stack, Rating, CircularProgress 
+  Box, TextField, Button, Paper, Typography, Stack, Rating, CircularProgress, FormControl, InputLabel, Select, MenuItem 
 } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -117,12 +117,23 @@ export default function EditUserPage() {
             value={formData.ruolo || ""}
             onChange={(e) => setFormData({...formData, ruolo: e.target.value})}
           />
-          <TextField
-            label="Colore"
-            fullWidth
-            value={formData.colore || ""}
-            onChange={(e) => setFormData({...formData, colore: e.target.value})}
-          />
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Colore</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={formData.colore}
+                label="Colore"
+                onChange={(e) => setFormData({ ...formData, colore: e.target.value })}
+              >
+                <MenuItem defaultChecked sx={{color:"#2ab150"}} value="success">Verde</MenuItem>
+                <MenuItem sx={{color:"#f47442"}} value="warning">Arancione</MenuItem>
+                <MenuItem sx={{color:"#cb6032"}} value="error">Rosso</MenuItem>
+                <MenuItem sx={{color:"#1976d2"}} value="info">Azzurro</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
           
           <Box>
             <Typography variant="caption" display="block">Valutazione</Typography>

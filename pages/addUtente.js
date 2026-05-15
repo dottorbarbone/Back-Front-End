@@ -9,7 +9,11 @@ import {
   Paper, 
   Typography, 
   Stack,
-  Rating
+  Rating,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
@@ -127,14 +131,23 @@ export default function AddUserForm() {
             onChange={(e) => setFormData({...formData, avatar: e.target.value})}
           />
 
-          <TextField
-            label="Colore Badge (primary, success, warning, error)"
-            variant="outlined"
-            fullWidth
-            value={formData.colore}
-            onChange={(e) => setFormData({...formData, colore: e.target.value})}
-            helperText="Usa: primary, success, warning o error"
-          />
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Colore</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={formData.colore}
+                label="Colore"
+                onChange={(e) => setFormData({ ...formData, colore: e.target.value })}
+              >
+                <MenuItem defaultChecked sx={{color:"#2ab150"}} value="success">Verde</MenuItem>
+                <MenuItem sx={{color:"#f47442"}} value="warning">Arancione</MenuItem>
+                <MenuItem sx={{color:"#cb6032"}} value="error">Rosso</MenuItem>
+                <MenuItem sx={{color:"#1976d2"}} value="info">Azzurro</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
          
           <Button 
             type="submit" 
